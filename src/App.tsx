@@ -8,6 +8,7 @@ export type TaskType = {
     isDone: boolean
 }
 
+
 export type FilterValuesType = 'all' | 'active' | 'completed'
 
 // Read => part, pagination, filtration, sort
