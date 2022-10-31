@@ -6,3 +6,21 @@
 .App > div {
   margin-right: 50px;
 }
+
+.isDone {
+  font-weight: bold;
+  opacity: 50%;
+  color: green;
+}
+
+.btnActive {
+  background-color: green;
+  color: white;
+  font-weight: bold;
+  border-color: mediumseagreen;
+}
+
+.error {
+  border: 2px solid red;
+  outline: none;
+}
