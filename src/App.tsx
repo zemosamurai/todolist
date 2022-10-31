@@ -11,7 +11,11 @@ export type TaskType = {
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 
-// Read => part, pagination, filtration, sort
+// Create +
+// Read =>+, filtration
+// Update +
+// Delete +
+
 
 function App() {
     //BLL:
@@ -24,7 +28,6 @@ function App() {
     )
 
     const [filter, setFilter] = useState<FilterValuesType>('all')
-
     const getFilteredTasks = (tasks: Array<TaskType>, filterValue: FilterValuesType) => {
         let filteredTasks = tasks
 
@@ -36,10 +39,7 @@ function App() {
         }
         return filteredTasks
     }
-
     const filteredTasks = getFilteredTasks(tasksForTodoList, filter)
-
-
     const changeFilter = (filter: FilterValuesType) => {
         setFilter(filter)
     }
@@ -47,7 +47,6 @@ function App() {
     const removeTask = (taskId: string) => {
         setTasksForTodoList(tasksForTodoList.filter(task => task.id !== taskId))
     }
-
     const addTask = (title: string) => {
         const newTask: TaskType = {
             id: v1(), // пакет который генирирует id v1()
@@ -55,6 +54,10 @@ function App() {
             isDone: false
         }
         setTasksForTodoList([newTask, ...tasksForTodoList])
+    }
+
+    const changeTaskStatus = (taskId: string, isDone: boolean) => {
+        setTasksForTodoList(tasksForTodoList.map(t => t.id === taskId ? {...t, isDone: isDone} : t))
     }
 
 
@@ -67,6 +70,8 @@ function App() {
                 addTask={addTask}
                 removeTask={removeTask}
                 changeFilter={changeFilter}
+                changeTaskStatus={changeTaskStatus}
+                filter={filter}
             />
         </div>
     );
