@@ -99,7 +99,7 @@ function App() {
         return filteredTasks
     }
 
-    
+
     const todoListsComponents = todoLists.length
         ? todoLists.map(tl => {
             const filteredTasks = getFilteredTasks(tasks[tl.id], tl.filter)
