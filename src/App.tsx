@@ -20,11 +20,24 @@ type TasksStateType = {
 
 function App() {
     //BLL:
-    const TodoListTitle: string = "What to learn"
-    const [tasksForTodoList, setTasksForTodoList] = useState<Array<TaskType>>([
+    const todoListId_1 = v1()
+    const todoListId_2 = v1()
+
+    const [todoLists, setTodoLists] = useState<Array<TodolistType>>([
+        {id: todoListId_1, title: 'What to learn', filter: 'all'},
+        {id: todoListId_2, title: 'What to buy', filter: 'all'}
+    ])
+
+    const [tasks, setTasks] = useState<TasksStateType>({
+        [todoListId_1]: [
             {id: v1(), title: "HTML&CSS", isDone: true},
             {id: v1(), title: "JS & ES6", isDone: true},
-            {id: v1(), title: "React", isDone: false},
+            {id: v1(), title: "React", isDone: false}
+        ],
+        [todoListId_2]: [
+            {id: v1(), title: "Milk", isDone: true},
+            {id: v1(), title: "Bread", isDone: true},
+            {id: v1(), title: "Water", isDone: false}
         ]
     )
 
