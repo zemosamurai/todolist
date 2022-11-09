@@ -1,45 +1,28 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {FilterValuesType, TaskType} from "./App";
 
-
 type TodoListPropsType = {
+    todoListId: string
     title: string
     tasks: Array<TaskType>
     filter: FilterValuesType
-    removeTask: (taskId: string) => void
-    addTask: (title: string) => void
-    changeFilter: (filter: FilterValuesType) => void
-    changeTaskStatus: (taskId: string, isDone: boolean) => void
+
+    removeTask: (taskId: string, todoListId: string) => void
+    addTask: (title: string, todoListId: string) => void
+    removeTodoList: (todoListId: string) => void
+    changeTodoListFilter: (filter: FilterValuesType, todoListId: string) => void
+    changeTaskStatus: (taskId: string, isDone: boolean, todoListId: string) => void
 }
 
 const TodoList = (props: TodoListPropsType) => {
     const [error, setError] = useState<boolean>(false)
     const [title, setTitle] = useState('')
 
-    const onClickAddTask = () => {
-        const trimmedTitle = title.trim()
-        if (trimmedTitle) {
-            props.addTask(trimmedTitle)
-        } else {
-            setError(true)
-        }
-
-        setTitle('')
-    }
-
-    const onChangeSetLocalTitle = (e: ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.currentTarget.value)
-        setError(false)
-    }
-    const onClickHandlerCreator = (filter: FilterValuesType) => () => props.changeFilter(filter)
-    const onKeyDownEnterAddTask = (e: KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && onClickAddTask()
-
-
-    const tasksList = props.tasks.length
+    const tasksJSXItemList = props.tasks.length
         ? <ul>
             {props.tasks.map((task) => {
-                const removeTask = () => props.removeTask(task.id)
-                const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(task.id, e.currentTarget.checked)
+                const removeTask = () => props.removeTask(task.id, props.todoListId)
+                const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(task.id, e.currentTarget.checked, props.todoListId)
                 return (
                     <li key={task.id} className={task.isDone ? 'isDone' : ''}>
                         <input
@@ -54,6 +37,24 @@ const TodoList = (props: TodoListPropsType) => {
             })
             }</ul>
         : <span>Your lis is empty</span>
+
+    const onClickAddTask = () => {
+        const trimmedTitle = title.trim()
+        if (trimmedTitle) {
+            props.addTask(trimmedTitle, props.todoListId)
+        } else {
+            setError(true)
+        }
+
+        setTitle('')
+    }
+    const onChangeSetLocalTitle = (e: ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.currentTarget.value)
+        setError(false)
+    }
+    const onClickFilterHandlerCreator = (filter: FilterValuesType) => () => props.changeTodoListFilter(filter, props.todoListId)
+    const onKeyDownEnterAddTask = (e: KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && onClickAddTask()
+    const removeTodoList = () => props.removeTodoList(props.todoListId)
 
 
     return (
@@ -70,16 +71,16 @@ const TodoList = (props: TodoListPropsType) => {
                 <button onClick={onClickAddTask}>+</button>
                 {error && <div style={{color: 'red'}}>Title is required</div>}
             </div>
-            {tasksList}
+            {tasksJSXItemList}
             <div>
                 <button className={props.filter === 'all' ? 'btnActive' : ''}
-                        onClick={onClickHandlerCreator('all')}>All
+                        onClick={onClickFilterHandlerCreator('all')}>All
                 </button>
                 <button className={props.filter === 'active' ? 'btnActive' : ''}
-                        onClick={onClickHandlerCreator('active')}>Active
+                        onClick={onClickFilterHandlerCreator('active')}>Active
                 </button>
                 <button className={props.filter === 'completed' ? 'btnActive' : ''}
-                        onClick={onClickHandlerCreator('completed')}>Completed
+                        onClick={onClickFilterHandlerCreator('completed')}>Completed
                 </button>
             </div>
         </div>
