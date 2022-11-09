@@ -41,7 +41,32 @@ function App() {
         ]
     )
 
-    const [filter, setFilter] = useState<FilterValuesType>('all')
+        const resultOfUpdate: Array<TaskType> = [newTask, ...tasksForUpdate]
+        const copyTasks: TasksStateType = {...tasks}
+        copyTasks[todoListId] = resultOfUpdate
+        setTasks(copyTasks)
+
+        // setTasks({...tasks, [todoListId]: [...tasks[todoListId], newTask]})
+    }
+    const changeTaskStatus = (taskId: string, isDone: boolean, todoListId: string) => {
+        const tasksForUpdate: Array<TaskType> = tasks[todoListId]
+        const resultOfUpdate: Array<TaskType> = tasksForUpdate.map(t => t.id === taskId ? {...t, isDone: isDone} : t)
+        const copyTasks: TasksStateType = {...tasks}
+        copyTasks[todoListId] = resultOfUpdate
+        setTasks(copyTasks)
+
+        // setTasks({...tasks, [todoListId]: tasks[todoListId].map(t => t.id === taskId ? {...t, isDone: isDone} : t)})
+    }
+
+    const changeTodoListFilter = (filter: FilterValuesType, todoListId: string) => {
+        setTodoLists(todoLists.map(tl => tl.id === todoListId ? {...tl, filter: filter} : tl))
+        // {...tl, filter: filter} сначало делаем копию tl а потом перезатираем св-во filter
+    }
+    const removeTodoList = (todoListId: string) => {
+        setTodoLists(todoLists.filter(tl => tl.id !== todoListId)) // удаляем Тудулист
+        delete tasks[todoListId] // так же удаляем таски этого Тудулиста
+    }
+
     const getFilteredTasks = (tasks: Array<TaskType>, filterValue: FilterValuesType) => {
         let filteredTasks = tasks
 
