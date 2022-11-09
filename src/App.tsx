@@ -8,14 +8,15 @@ export type TaskType = {
     title: string
     isDone: boolean
 }
-
 export type FilterValuesType = 'all' | 'active' | 'completed'
-
-// Create +
-// Read =>+, filtration
-// Update +
-// Delete +
-
+type TodolistType = {
+    id: string
+    title: string
+    filter: FilterValuesType
+}
+type TasksStateType = {
+    [todoListId: string]: Array<TaskType>
+}
 
 function App() {
     //BLL:
