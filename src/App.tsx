@@ -98,27 +98,8 @@ function App() {
         }
         return filteredTasks
     }
-    const filteredTasks = getFilteredTasks(tasksForTodoList, filter)
-    const changeFilter = (filter: FilterValuesType) => {
-        setFilter(filter)
-    }
 
-    const removeTask = (taskId: string) => {
-        setTasksForTodoList(tasksForTodoList.filter(task => task.id !== taskId))
-    }
-    const addTask = (title: string) => {
-        const newTask: TaskType = {
-            id: v1(), // пакет который генирирует id v1()
-            title,           // title: title
-            isDone: false
-        }
-        setTasksForTodoList([newTask, ...tasksForTodoList])
-    }
-
-    const changeTaskStatus = (taskId: string, isDone: boolean) => {
-        setTasksForTodoList(tasksForTodoList.map(t => t.id === taskId ? {...t, isDone: isDone} : t))
-    }
-
+    
     const todoListsComponents = todoLists.length
         ? todoLists.map(tl => {
             const filteredTasks = getFilteredTasks(tasks[tl.id], tl.filter)
