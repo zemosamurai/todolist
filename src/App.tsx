@@ -39,7 +39,27 @@ function App() {
             {id: v1(), title: "Bread", isDone: true},
             {id: v1(), title: "Water", isDone: false}
         ]
-    )
+    })
+
+    //
+    const removeTask = (taskId: string, todoListId: string) => {
+        const tasksForUpdate: Array<TaskType> = tasks[todoListId] // Находим по id конкретный массив тасок
+        const resultOfUpdate: Array<TaskType> = tasksForUpdate.filter(task => task.id !== taskId) // Результат фильтрации в котором удаляем таску
+        const copyTasks = {...tasks} // делаем копию стэйта тасок
+        copyTasks[todoListId] = resultOfUpdate // а теперь в копию по id положим новый массив
+        setTasks(copyTasks) // засетаем копию
+
+        // setTasks({...tasks, [todoListId]: tasks[todoListId].filter(task => task.id !== taskId)})
+        // результат рефакторинга первого варианта
+    }
+    const addTask = (title: string, todoListId: string) => {
+        const tasksForUpdate: Array<TaskType> = tasks[todoListId]
+
+        const newTask: TaskType = {
+            id: v1(),
+            title, // title: title
+            isDone: false
+        }
 
         const resultOfUpdate: Array<TaskType> = [newTask, ...tasksForUpdate]
         const copyTasks: TasksStateType = {...tasks}
