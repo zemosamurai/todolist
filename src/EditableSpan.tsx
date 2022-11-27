@@ -8,14 +8,8 @@ export const EditableSpan = (props: EditableSpanPropsType) => {
     const [title, setTitle] = useState(props.title)
     const [editMode, setEditMode] = useState(false)
 
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.currentTarget.value)
-    }
-
-    const activateEditMode = () => {
-        setEditMode(true)
-    }
-
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
+    const activateEditMode = () => setEditMode(true)
     const activateViewMode = () => {
         setEditMode(false)
         props.callBack(title)
