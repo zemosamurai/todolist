@@ -1,4 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 type AddItemFormPropsType = {
     addItem: (newTitle: string) => void
@@ -25,14 +27,22 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
 
     return (
         <div>
-            <input
+            <TextField
                 value={title}
                 onChange={onChangeSetLocalTitle}
                 onKeyDown={onKeyDownEnterAddTask}
-                className={error ? 'error' : ''}
+                // className={error ? 'error' : ''}
+                label={error ? 'enter correct value' : "enter your title"}
+                variant="outlined"
+                color={error ? 'error' : 'primary'}
+                size='small'
             />
-            <button onClick={onClickAddTask}>+</button>
-            {error && <div style={{color: 'red'}}>Title is required</div>}
+            <Button
+                onClick={onClickAddTask}
+                variant='contained'
+                color='primary'
+                style={{maxWidth: '40px', maxHeight: '40px', minWidth: '40px', minHeight: '40px'}}
+            >+</Button>
         </div>
     )
 }
