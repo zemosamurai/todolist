@@ -42,7 +42,6 @@ test('should be added todolist', () => {
 
 })
 
-
 test('should be filtered todolist', () => {
     let todolistId1 = v1();
     let todolistId2 = v1();
@@ -59,7 +58,6 @@ test('should be filtered todolist', () => {
     expect(endState.length).toBe(2)
     expect(endState[1].filter).toBe(newFilter)
 })
-
 
 test('should be change todolist title', () => {
     let todolistId1 = v1();
