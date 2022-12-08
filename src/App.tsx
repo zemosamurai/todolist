@@ -67,11 +67,17 @@ function App() {
     const changeTaskStatus = (taskId: string, isDone: boolean, todoListId: string) => {
         setTasks({...tasks, [todoListId]: tasks[todoListId].map(t => t.id === taskId ? {...t, isDone: isDone} : t)})
     }
+    const editTaskTitle = (todoListId: string, taskId: string, newTitle: string) => {
+        setTasks({
+            ...tasks,
+            [todoListId]: tasks[todoListId].map(el => el.id === taskId ? {...el, title: newTitle} : el)
+        })
+    }
+
     const changeTodoListFilter = (filter: FilterValuesType, todoListId: string) => {
         setTodoLists(todoLists.map(tl => tl.id === todoListId ? {...tl, filter: filter} : tl))
-        // {...tl, filter: filter} сначало делаем копию tl а потом перезатираем св-во filter
     }
-    const getFilteredTasks = (tasks: Array<TaskType>, filterValue: FilterValuesType) => {
+    const getFilteredTodoList = (tasks: Array<TaskType>, filterValue: FilterValuesType) => {
         let filteredTasks = tasks
 
         if (filterValue === 'active') {
@@ -92,19 +98,13 @@ function App() {
         setTodoLists(todoLists.filter(tl => tl.id !== todoListId)) // удаляем Тудулист
         delete tasks[todoListId] // так же удаляем таски этого Тудулиста
     }
-    const editTaskTitle = (todoListId: string, taskId: string, newTitle: string) => {
-        setTasks({
-            ...tasks,
-            [todoListId]: tasks[todoListId].map(el => el.id === taskId ? {...el, title: newTitle} : el)
-        })
-    }
     const editTodoListTitle = (todoListId: string, newTitle: string) => {
         setTodoLists(todoLists.map(el => el.id === todoListId ? {...el, title: newTitle} : el))
     }
 
     const todoListsComponents = todoLists.length
         ? todoLists.map(tl => {
-            const filteredTasks = getFilteredTasks(tasks[tl.id], tl.filter)
+            const filteredTasks = getFilteredTodoList(tasks[tl.id], tl.filter)
             return (
                 <Grid item>
                     <Paper style={{padding: '15px'}}>
