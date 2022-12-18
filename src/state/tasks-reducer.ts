@@ -2,12 +2,14 @@ import {v1} from "uuid";
 import {TasksStateType} from "../App";
 import {AddTodoListACType, RemoveTodoListACType} from "./todolist-reducer";
 
-export const TasksReducer = (state: TasksStateType, action: ReducersActionsType): TasksStateType => {
+const initialState: TasksStateType = {}
+
+export const tasksReducer = (state = initialState, action: ReducersActionsType): TasksStateType => {
     switch (action.type) {
         case 'REMOVE-TASK': {
             return {
                 ...state,
-                [action.payload.todolistId]: state[action.payload.todolistId].filter(el => el.id !== action.payload.id)
+                [action.payload.todolistId]: state[action.payload.todolistId].filter(el => el.id !== action.payload.taskId)
             }
         }
         case 'ADD-TASK': {
@@ -40,33 +42,30 @@ export const TasksReducer = (state: TasksStateType, action: ReducersActionsType)
             delete copyState[action.payload.id]
             return copyState
         }
-
-        default:
-            throw new Error('Error, not correct type action')
+        default: return state
     }
 }
-
 
 type ReducersActionsType = removeTaskACType | addTaskACType | changeTaskStatusACType | changeTaskTitleACType | AddTodoListACType | RemoveTodoListACType
 
 type removeTaskACType = ReturnType<typeof removeTaskAC>
-export const removeTaskAC = (id: string, todolistId: string) => {
+export const removeTaskAC = (todolistId: string ,taskId: string) => {
     return {
         type: 'REMOVE-TASK',
         payload: {
-            id,
+            taskId,
             todolistId
         }
     } as const
 }
 
 type addTaskACType = ReturnType<typeof addTaskAC>
-export const addTaskAC = (title: string, todolistId: string) => {
+export const addTaskAC = (todolistId: string, title: string) => {
     return {
         type: 'ADD-TASK',
         payload: {
-            title,
-            todolistId
+            todolistId,
+            title
         }
     } as const
 }
