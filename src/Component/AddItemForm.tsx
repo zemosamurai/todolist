@@ -1,17 +1,17 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import React, {ChangeEvent, KeyboardEvent, memo, useState} from "react";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 type AddItemFormPropsType = {
     addItem: (newTitle: string) => void
 }
-export const AddItemForm = ({addItem}: AddItemFormPropsType) => {
+export const AddItemForm = memo(({addItem}: AddItemFormPropsType) => {
+    console.log('AddItemForm')
     const [title, setTitle] = useState('')
     const [error, setError] = useState(false)
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
-        setError(false)
     }
     const onAddTask = () => {
         if (title.trim() !== '') {
@@ -22,6 +22,9 @@ export const AddItemForm = ({addItem}: AddItemFormPropsType) => {
         }
     }
     const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (error) {
+            setError(false)
+        }
         if (e.key === 'Enter') {
             onAddTask()
         }
@@ -44,4 +47,4 @@ export const AddItemForm = ({addItem}: AddItemFormPropsType) => {
             >+</Button>
         </div>
     )
-}
+})
