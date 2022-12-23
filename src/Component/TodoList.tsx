@@ -32,6 +32,14 @@ export const TodoList = (props: TodoListPropsType) => {
     }
     const onChangeTodoListTile = (newTitle: string) => {
         props.changeTodoListTitle(props.todoListId, newTitle)
+    }, [props.changeTodoListTitle, props.todoListId])
+
+    let filteredTasks = props.tasks
+    if (props.filter === 'active') {
+        filteredTasks = filteredTasks.filter(el => !el.isDone)
+    }
+    if (props.filter === 'completed') {
+        filteredTasks = filteredTasks.filter(el => el.isDone)
     }
 
     return (
