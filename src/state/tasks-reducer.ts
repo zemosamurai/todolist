@@ -1,5 +1,5 @@
 import {v1} from "uuid";
-import {TasksStateType} from "../App";
+import {TasksStateType} from "../AppWithRedux";
 import {AddTodoListACType, RemoveTodoListACType} from "./todolist-reducer";
 
 const initialState: TasksStateType = {}
