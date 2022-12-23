@@ -1,11 +1,11 @@
-import React, {ChangeEvent} from 'react';
+import React, {memo, useCallback} from 'react';
 import {FilterValuesType, TaskType} from "../App";
 import {EditableSpan} from "./EditableSpan";
 import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {IconButton} from "@mui/material";
 import {AddItemForm} from "./AddItemForm";
+import {Task} from "./Task";
 
 
 type TodoListPropsType = {
@@ -22,15 +22,18 @@ type TodoListPropsType = {
     changeTodoListTitle: (todoListId: string, newTitle: string) => void
 }
 
-export const TodoList = (props: TodoListPropsType) => {
-    const onClickFilterHandler = (filter: FilterValuesType) => {
+export const TodoList = memo((props: TodoListPropsType) => {
+    console.log('TodoList')
+    const onClickFilterHandler = useCallback((filter: FilterValuesType) => {
         props.changeTodoListFilter(props.todoListId, filter)
-    }
-    const removeTodoList = () => props.removeTodoList(props.todoListId)
-    const onAddTask = (newTitle: string) => {
+    }, [props.changeTodoListFilter, props.todoListId])
+    const removeTodoList = useCallback(() => {
+        props.removeTodoList(props.todoListId)
+    }, [props.removeTodoList, props.todoListId])
+    const onAddTask = useCallback((newTitle: string) => {
         props.addTask(props.todoListId, newTitle)
-    }
-    const onChangeTodoListTile = (newTitle: string) => {
+    }, [props.addTask, props.todoListId])
+    const onChangeTodoListTile = useCallback((newTitle: string) => {
         props.changeTodoListTitle(props.todoListId, newTitle)
     }, [props.changeTodoListTitle, props.todoListId])
 
@@ -82,6 +85,6 @@ export const TodoList = (props: TodoListPropsType) => {
             </div>
         </div>
     );
-};
+})
 
 
