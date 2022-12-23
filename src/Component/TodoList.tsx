@@ -44,30 +44,16 @@ export const TodoList = (props: TodoListPropsType) => {
             </h3>
             <AddItemForm addItem={onAddTask}/>
             <ul>
-                {props.tasks.map((task) => {
-                    const onRemoveTask = () => {
-                        props.removeTask(props.todoListId, task.id)
-                    }
-                    const onChangeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
-                        props.changeTaskStatus(props.todoListId, task.id, e.currentTarget.checked)
-                    }
-                    const onChangeTaskTitle = (newTitle: string) => {
-                        props.changeTaskTitle(props.todoListId, task.id, newTitle)
-                    }
-
-                    return (
-                        <li key={task.id} className={task.isDone ? 'isDone' : ''}>
-                            <Checkbox
-                                checked={task.isDone}
-                                onChange={onChangeTaskStatus}
-                                size='small'
-                                color='primary'
-                            />
-                            <EditableSpan title={task.title} changeTitle={onChangeTaskTitle}/>
-                            <button onClick={onRemoveTask}>x</button>
-                        </li>
-                    )
-                })}
+                {
+                    filteredTasks.map((el) => <Task
+                        key={el.id}
+                        todoListId={props.todoListId}
+                        task={el}
+                        changeTaskStatus={props.changeTaskStatus}
+                        changeTaskTitle={props.changeTaskTitle}
+                        removeTask={props.removeTask}
+                    />)
+                }
             </ul>
             <div>
                 <Button
