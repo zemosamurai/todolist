@@ -28,7 +28,6 @@ export const TodoList = memo((props: TodoListPropsType) => {
         changeTaskStatus, removeTodoList, changeTodoListFilter, changeTodoListTitle
     } = props
 
-    console.log('TodoList')
     const onClickFilterHandler = useCallback((filter: FilterValuesType) => {
         changeTodoListFilter(todoListId, filter)
     }, [changeTodoListFilter, todoListId])
