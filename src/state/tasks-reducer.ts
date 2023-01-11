@@ -1,10 +1,11 @@
 import {v1} from "uuid";
 import {TasksStateType} from "../AppWithRedux";
 import {AddTodoListACType, RemoveTodoListACType} from "./todolist-reducer";
+import {TaskPriorities, TaskStatuses} from "../api/todolist-api";
 
 const initialState: TasksStateType = {}
 
-export const tasksReducer = (state = initialState, action: ReducersActionsType): TasksStateType => {
+export const tasksReducer = (state: TasksStateType = initialState, action: ReducersActionsType): TasksStateType => {
     switch (action.type) {
         case 'REMOVE-TASK': {
             return {
@@ -13,7 +14,19 @@ export const tasksReducer = (state = initialState, action: ReducersActionsType):
             }
         }
         case 'ADD-TASK': {
-            let newTask = {id: v1(), title: action.payload.title, isDone: false};
+            let newTask = {
+                id: v1(),
+                title: action.payload.title,
+                status: TaskStatuses.Completed,
+                todoListId: action.payload.todolistId,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+                order: 0,
+                priority: TaskPriorities.Low,
+                description: '',
+                completed: false
+            };
             return {...state, [action.payload.todolistId]: [newTask, ...state[action.payload.todolistId]]}
         }
         case 'CHANGE-TASK-STATUS': {
@@ -21,7 +34,7 @@ export const tasksReducer = (state = initialState, action: ReducersActionsType):
                 ...state,
                 [action.payload.todolistId]: state[action.payload.todolistId].map(el => el.id === action.payload.id ? {
                     ...el,
-                    isDone: action.payload.isDone
+                    completed: action.payload.completed
                 } : el)
             }
         }
@@ -42,14 +55,21 @@ export const tasksReducer = (state = initialState, action: ReducersActionsType):
             delete copyState[action.payload.id]
             return copyState
         }
-        default: return state
+        default:
+            return state
     }
 }
 
-type ReducersActionsType = removeTaskACType | addTaskACType | changeTaskStatusACType | changeTaskTitleACType | AddTodoListACType | RemoveTodoListACType
+type ReducersActionsType =
+    removeTaskACType
+    | addTaskACType
+    | changeTaskStatusACType
+    | changeTaskTitleACType
+    | AddTodoListACType
+    | RemoveTodoListACType
 
 type removeTaskACType = ReturnType<typeof removeTaskAC>
-export const removeTaskAC = (todolistId: string ,taskId: string) => {
+export const removeTaskAC = (todolistId: string, taskId: string) => {
     return {
         type: 'REMOVE-TASK',
         payload: {
@@ -71,13 +91,13 @@ export const addTaskAC = (todolistId: string, title: string) => {
 }
 
 type changeTaskStatusACType = ReturnType<typeof changeTaskStatusAC>
-export const changeTaskStatusAC = (todolistId: string, id: string, isDone: boolean) => {
+export const changeTaskStatusAC = (todolistId: string, id: string, completed: boolean) => {
     return {
         type: 'CHANGE-TASK-STATUS',
         payload: {
             todolistId,
             id,
-            isDone
+            completed
         }
     } as const
 }
