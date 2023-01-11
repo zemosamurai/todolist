@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {ComponentStory, ComponentMeta} from '@storybook/react';
 import {action} from "@storybook/addon-actions";
 import {Task} from "./Task";
-import {TaskType} from "../AppWithRedux";
+import {TaskPriorities, TaskStatuses, TaskType} from "../api/todolist-api";
 
 export default {
     title: 'TODOLIST/Task',
@@ -16,23 +16,53 @@ export default {
 } as ComponentMeta<typeof Task>;
 
 const Template: ComponentStory<typeof Task> = (args) => <Task {...args} />;
-export const TaskStoryIsDone = Template.bind({});
-TaskStoryIsDone.args = {
-    task: {id: '1', title: 'css', isDone: true},
+export const TaskStorycompleted = Template.bind({});
+TaskStorycompleted.args = {
+    task: {
+        id: '1', title: 'css', status: TaskStatuses.Completed,
+        todoListId: 'todoListId_1',
+        startDate: '',
+        deadline: '',
+        addedDate: '',
+        order: 0,
+        priority: TaskPriorities.Low,
+        description: '',
+        completed: true
+    },
     todoListId: 'todoId1',
 };
 
-export const TaskStoryNotIsDone = Template.bind({});
-TaskStoryNotIsDone.args = {
-    task: {id: '2', title: 'js', isDone: false},
+export const TaskStoryNotcompleted = Template.bind({});
+TaskStoryNotcompleted.args = {
+    task: {
+        id: '2', title: 'js', status: TaskStatuses.Completed,
+        todoListId: 'todoListId_1',
+        startDate: '',
+        deadline: '',
+        addedDate: '',
+        order: 0,
+        priority: TaskPriorities.Low,
+        description: '',
+        completed: true
+    },
     todoListId: 'todoId2',
 };
 
 const Template1: ComponentStory<typeof Task> = (args) => {
-    const [task, setTask] = useState({id: '2', isDone: false, title: 'css'})
+    const [task, setTask] = useState({
+        id: '2', title: 'css', status: TaskStatuses.Completed,
+        todoListId: 'todoListId_1',
+        startDate: '',
+        deadline: '',
+        addedDate: '',
+        order: 0,
+        priority: TaskPriorities.Low,
+        description: '',
+        completed: true
+    })
     const removeTask = () => setTask({} as TaskType)
     const changeTaskStatus = () => {
-        setTask({...task, isDone: !task.isDone})
+        setTask({...task, completed: !task.completed})
     }
     const changeTaskTitle = (todoId: string, taskId: string, title: string) => setTask({...task, title})
     return <Task
