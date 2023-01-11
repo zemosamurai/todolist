@@ -1,14 +1,14 @@
 import React, {ChangeEvent, memo, useCallback} from 'react';
 import Checkbox from "@mui/material/Checkbox";
 import {EditableSpan} from "./EditableSpan";
-import {TaskType} from "../AppWithRedux";
+import {TaskType} from "../api/todolist-api";
 
 type TaskPropsType = {
     todoListId: string
     task: TaskType
     removeTask: (todoListId: string, taskId: string) => void
     changeTaskTitle: (todoListId: string, taskId: string, newTitle: string) => void
-    changeTaskStatus: (todoListId: string, taskId: string, isDone: boolean) => void
+    changeTaskStatus: (todoListId: string, taskId: string, completed: boolean) => void
 }
 
 export const Task = memo(({todoListId, task, removeTask, changeTaskTitle, changeTaskStatus}: TaskPropsType) => {
@@ -22,9 +22,9 @@ export const Task = memo(({todoListId, task, removeTask, changeTaskTitle, change
     }, [changeTaskTitle, todoListId, task.id])
 
     return (
-        <li className={task.isDone ? 'isDone' : ''}>
+        <li className={task.completed ? 'completed' : ''}>
             <Checkbox
-                checked={task.isDone}
+                checked={task.completed}
                 onChange={onChangeTaskStatus}
                 size='small'
                 color='primary'
